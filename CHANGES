@@ -1,0 +1,26 @@
+[v1.2 20050826]
+
+* Release
+
+[v1.1 20050726]
+
+* Release
+
+[v1.0 - 20050501]
+
+* First version
+
+* Introduced a helper portal tool to improve configurability and logic
+  handling. (06/12/05)
+
+* Now siteadmins can setup more than one MountFolder at the root of the portal
+  (no more hardcoding of 'content'). (06/14/05)
+
+* Fixed Selenium tests (06/15/05)
+
+* Fixed a bug with copy-pasting an ATDocument called 'index_html' within a 
+  MountFolder-based content branch. Some code using ReplaceableWrapper 
+  (see CMFPlone/PloneFolder) was copied from ATCT. (08/26/05)
+
+* Added normal unit tests, specifically related to the above mentioned bug.
+  Thx to Nicolas Geissel. (08/26/05)
