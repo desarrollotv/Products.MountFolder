@@ -35,7 +35,7 @@ from Products.ZODBMountPoint.MountedObject import manage_addMounts, getMountPoin
 from DBTab.DBTab import DBTab
 
 # CMF imports
-from Products.CMFCore import CMFCorePermissions
+from Products.CMFCore import permissions
 from Products.CMFCore.utils import getToolByName
 
 # Products imports

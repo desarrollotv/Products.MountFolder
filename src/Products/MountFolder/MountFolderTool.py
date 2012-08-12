@@ -30,7 +30,7 @@ from OFS.PropertyManager import PropertyManager
 # CMF imports
 from Products.CMFCore.utils import UniqueObject, getToolByName
 from Products.CMFCore.ActionProviderBase import ActionProviderBase
-from Products.CMFCore import CMFCorePermissions
+from Products.CMFCore import permissions
 from Products.CMFCore.ActionInformation import ActionInformation
 from Products.CMFCore.Expression import Expression
 
@@ -55,7 +55,7 @@ class MountFolderTool(PropertyManager, UniqueObject, SimpleItem, ActionProviderB
                               , description=''
                               , action=Expression(
                                  text="python:portal.portal_mountfolder.getMountFolderUrl(object) + '/mf_undo_form'")
-                              , permissions=(CMFCorePermissions.ListUndoableChanges, )
+                              , permissions=(permissions.ListUndoableChanges, )
                               , category='user'
                               , condition=Expression(text="python:member and portal.portal_mountfolder.getMountFolder(object)")
                               , visible=1
@@ -66,7 +66,7 @@ class MountFolderTool(PropertyManager, UniqueObject, SimpleItem, ActionProviderB
                               , description=''
                               , action=Expression(
                                  text='string:$portal_url/undo_form')
-                              , permissions=(CMFCorePermissions.ListUndoableChanges, )
+                              , permissions=(permissions.ListUndoableChanges, )
                               , category='user'
                               , condition=Expression(text="python:member and not portal.portal_mountfolder.getMountFolder(object)")
                               , visible=1
@@ -77,7 +77,7 @@ class MountFolderTool(PropertyManager, UniqueObject, SimpleItem, ActionProviderB
     security = ClassSecurityInfo()
                 
 
-    security.declareProtected(CMFCorePermissions.View, 'getMountFolder')
+    security.declareProtected(permissions.View, 'getMountFolder')
     def getMountFolder(self, object, mfolders_container=None):
         """
         Get the containing MountFolder of an object,
@@ -94,7 +94,7 @@ class MountFolderTool(PropertyManager, UniqueObject, SimpleItem, ActionProviderB
             if folder.getId() in object_path:
                 return folder
     
-    security.declareProtected(CMFCorePermissions.View, 'getMountFolderUrl')
+    security.declareProtected(permissions.View, 'getMountFolderUrl')
     def getMountFolderUrl(self, object):
         """
         Get the containing MountFolder's URL.

@@ -36,7 +36,7 @@ from webdav.Lockable import ResourceLockedError
 # CMF imports
 from Products.CMFCore.utils import _checkPermission
 from Products.CMFCore.utils import _getAuthenticatedUser
-from Products.CMFCore import CMFCorePermissions
+from Products.CMFCore import permissions
 from Products.CMFCore.utils import getToolByName
 
 # Archetypes imports
@@ -75,7 +75,7 @@ class MountFolder(BaseFolderMixin, OrderedContainer):
                 'id'            : 'local_roles',
                 'name'          : 'Sharing',
                 'action'        : 'string:${folder_url}/folder_localrole_form',
-                'permissions'   : (CMFCorePermissions.ManageProperties,),
+                'permissions'   : (permissions.ManageProperties,),
                },)
 
     security = ClassSecurityInfo()
@@ -99,7 +99,7 @@ class MountFolder(BaseFolderMixin, OrderedContainer):
     #   Needed apparently for better handling of 'index_html'
     #   Fixes an ugly bug that appeared when copy/pasting a document called 'index_html'
     #
-    security.declareProtected(CMFCorePermissions.View, 'index_html')
+    security.declareProtected(permissions.View, 'index_html')
     def index_html(self):
        """Special case index_html"""
        if HAS_PLONE2:
@@ -133,7 +133,7 @@ class MountFolder(BaseFolderMixin, OrderedContainer):
     #   undo-ing inner-MountFolder transactions.
     #   Improvement is needed !
     #
-    security.declareProtected(CMFCorePermissions.ListUndoableChanges, 'listMFUndoableTransactionsFor')
+    security.declareProtected(permissions.ListUndoableChanges, 'listMFUndoableTransactionsFor')
     def listMFUndoableTransactionsFor(self, object,
                                       first_transaction=None,
                                       last_transaction=None,

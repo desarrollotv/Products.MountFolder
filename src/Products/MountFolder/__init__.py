@@ -24,7 +24,7 @@ __docformat__ = 'restructuredtext'
 from Products.CMFCore.DirectoryView import registerDirectory
 
 from Products.CMFCore import utils
-from Products.CMFCore import CMFCorePermissions
+from Products.CMFCore import permissions
 
 from Products.Archetypes.atapi import process_types, listTypes
 
@@ -44,7 +44,7 @@ def initialize(context):
     utils.ContentInit(
         'Mount Folder',
         content_types      = content_types,
-        permission         = CMFCorePermissions.ManagePortal,
+        permission         = permissions.ManagePortal,
         extra_constructors = constructors,
         fti                = ftis,
         ).initialize(context)

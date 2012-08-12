@@ -90,7 +90,7 @@ from Products.Archetypes import listTypes
 from Products.Archetypes.Widget import IdWidget, StringWidget, BooleanWidget, \
      KeywordWidget, TextAreaWidget, CalendarWidget, SelectionWidget
 from Products.Archetypes.utils import DisplayList
-from Products.CMFCore  import CMFCorePermissions
+from Products.CMFCore  import permissions
 from Products.Archetypes.ExtensibleMetadata import FLOOR_DATE,CEILING_DATE
 from Globals import package_home
 from Products.MountFolder.config import GLOBALS

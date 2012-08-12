@@ -26,7 +26,7 @@ from StringIO import StringIO
 
 # CMF imports
 from Products.CMFCore.utils import getToolByName
-from Products.CMFCore.CMFCorePermissions import ListUndoableChanges
+from Products.CMFCore.permissions import ListUndoableChanges
 
 # Archetypes imports
 from Products.Archetypes import listTypes
