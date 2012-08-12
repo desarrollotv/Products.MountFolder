@@ -50,12 +50,10 @@ from Products.Archetypes.atapi import registerType
 
 # Product imports
 from Products.MountFolder.config import PROJECTNAME
-from Products.MountFolder.config import HAS_PLONE2
 
 # Other imports as in ATContentTypes 0.2
-if HAS_PLONE2:
-    from Products.CMFPlone.PloneFolder import ReplaceableWrapper
-    from webdav.NullResource import NullResource
+from Products.CMFPlone.PloneFolder import ReplaceableWrapper
+from webdav.NullResource import NullResource
 
 
 class MountFolder(BaseFolderMixin, OrderedContainer):
@@ -103,29 +101,23 @@ class MountFolder(BaseFolderMixin, OrderedContainer):
     security.declareProtected(permissions.View, 'index_html')
     def index_html(self):
        """Special case index_html"""
-       if HAS_PLONE2:
-           # COPIED FROM CMFPLONE 2.1
-           request = getattr(self, 'REQUEST', None)
-           if request and request.has_key('REQUEST_METHOD'):
-               if (request.maybe_webdav_client and
-                   request['REQUEST_METHOD'] in  ['PUT']):
-                   # Very likely a WebDAV client trying to create something
-                   return ReplaceableWrapper(NullResource(self, 'index_html'))
-           # Acquire from parent
-           _target = aq_parent(aq_inner(self)).aq_acquire('index_html')
-           return ReplaceableWrapper(aq_base(_target).__of__(self))
-       else:
-           return OrderedBaseFolder.index_html(self)
-       
+       # COPIED FROM CMFPLONE 2.1
+       request = getattr(self, 'REQUEST', None)
+       if request and request.has_key('REQUEST_METHOD'):
+           if (request.maybe_webdav_client and
+               request['REQUEST_METHOD'] in  ['PUT']):
+               # Very likely a WebDAV client trying to create something
+               return ReplaceableWrapper(NullResource(self, 'index_html'))
+       # Acquire from parent
+       _target = aq_parent(aq_inner(self)).aq_acquire('index_html')
+       return ReplaceableWrapper(aq_base(_target).__of__(self))
+   
     index_html = ComputedAttribute(index_html, 1)
 
     def __browser_default__(self, request):
         """ Set default so we can return whatever we want instead
         of index_html """
-        if HAS_PLONE2:
-            return getToolByName(self, 'plone_utils').browserDefault(self)
-        else:
-            return OrderedBaseFolder.__browser_default__(self, request)
+        return getToolByName(self, 'plone_utils').browserDefault(self)
 
 
     #
