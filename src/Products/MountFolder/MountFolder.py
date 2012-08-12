@@ -30,6 +30,7 @@ from Acquisition import aq_inner
 from Acquisition import aq_parent
 from ExtensionClass import Base
 from OFS import ObjectManager
+from OFS.interfaces import IOrderedContainer
 from zExceptions import BadRequest
 from webdav.Lockable import ResourceLockedError
 
@@ -64,7 +65,7 @@ class MountFolder(BaseFolderMixin, OrderedContainer):
 
     isReferenceable = None
 
-    __implements__ = IBaseFolder, OrderedContainer.__implements__
+    implements = (IBaseFolder, IOrderedContainer)
 
     schema = BaseFolderMixin.schema
     
