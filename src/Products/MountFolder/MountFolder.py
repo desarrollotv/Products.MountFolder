@@ -24,15 +24,11 @@ __docformat__ = 'restructuredtext'
 # Zope imports
 from AccessControl import ClassSecurityInfo
 from ComputedAttribute import ComputedAttribute
-from Globals import InitializeClass
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from ExtensionClass import Base
-from OFS import ObjectManager
 from OFS.interfaces import IOrderedContainer
-from zExceptions import BadRequest
-from webdav.Lockable import ResourceLockedError
+from zExceptions import Unauthorized
 
 # CMF imports
 from Products.CMFCore.utils import _checkPermission
@@ -45,7 +41,6 @@ from Products.Archetypes.interfaces.base import IBaseFolder
 from Products.Archetypes.OrderedBaseFolder import OrderedContainer
 
 from Products.Archetypes.atapi import BaseFolderMixin
-from Products.Archetypes.atapi import OrderedBaseFolder
 from Products.Archetypes.atapi import registerType
 
 # Product imports
