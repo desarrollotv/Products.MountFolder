@@ -20,6 +20,7 @@ MountFolder base test
 """
 __docformat__ = 'restructuredtext'
 
+import transaction
 
 from common import *
 from Products.CMFCore.utils import getToolByName
@@ -50,7 +51,7 @@ class TestSiteMountFolder(MountFolderTestCase):
         index_html = self.addContent(src_folder, content_id=document_id, type_name='Document')
         
         # Make sure we have _p_jar
-        get_transaction().commit(1)
+        transaction.commit(1)
         
         # Create dst folder
         folder_id = 'dst_folder'
@@ -61,7 +62,7 @@ class TestSiteMountFolder(MountFolderTestCase):
         dst_folder.manage_pasteObjects(cb_copy_data=cb)
         
         # Make sure we have _p_jar
-        get_transaction().commit(1)
+        transaction.commit(1)
         
         #new_document = getattr(src_folder, document_id)
         #self.assertEqual(new_document.getId(), document_id)

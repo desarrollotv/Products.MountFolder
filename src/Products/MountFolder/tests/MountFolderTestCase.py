@@ -26,6 +26,7 @@ import time
 import os
 
 # Zope imports
+import transaction
 from Testing import ZopeTestCase
 from AccessControl.SecurityManagement import newSecurityManager
 from AccessControl.SecurityManagement import noSecurityManager
@@ -154,7 +155,7 @@ class MountFolderTestCase(PloneTestCase.PloneTestCase):
         newSecurityManager(None, user)
 
 def setupMountFolder(app, quiet=0):
-    get_transaction().begin()
+    transaction.begin()
     _start = time.time()
     portal = app.portal
 
@@ -172,7 +173,7 @@ def setupMountFolder(app, quiet=0):
 
     # Initialized MountPoint
     manage_addMounts(app, (mountfolder_path,))
-    get_transaction().commit()
+    transaction.commit()
 
     # Create portal member
     portal.portal_registration.addMember(portal_member, 'azerty', ['Member'])
@@ -180,7 +181,7 @@ def setupMountFolder(app, quiet=0):
 
     # Log out
     noSecurityManager()
-    get_transaction().commit()
+    transaction.commit()
     if not quiet: ZopeTestCase._print('done (%.3fs)\n' % (time.time()-_start,))
     
 def setupMountPoint():

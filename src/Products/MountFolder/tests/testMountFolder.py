@@ -30,6 +30,7 @@ from Products.Archetypes.tests import ArchetypesTestCase# import ArcheSiteTestCa
 import unittest
 import Testing
 import ZODB
+import transaction
 from OFS.Application import Application
 from OFS.Folder import Folder
 import App.config
@@ -168,14 +169,14 @@ class MountFolderTests(ArchetypesTestCase.ArcheSiteTestCase):      #unittest.Tes
 ##        root = conn.root()
 ##        root['Application'] = app = Application()
 ##        self.app = app
-##        get_transaction().commit()  # Get app._p_jar set
+##        transaction.commit()  # Get app._p_jar set
 
 ##        # XXXXXXX
 ##        # HERE IS THE PLACE WHERE THE PLONE SITE SHOULD BE CREATED...
 
 ##        ArchetypesTestCase.ArcheSiteTestCase._setup(self,)
 ##        ArchetypesTestCase.ArcheSiteTestCase.afterSetUp(self)
-##        get_transaction().commit()  # Get app._p_jar set
+##        transaction.commit()  # Get app._p_jar set
 ##        print self.app.objectIds()
 ##        print self.portal.absolute_url()
 
@@ -186,13 +187,13 @@ class MountFolderTests(ArchetypesTestCase.ArcheSiteTestCase):      #unittest.Tes
         # Now we add the mount point for the content itself
         Log(LOG_DEBUG, "afterSetUp")
         manage_addMounts(self.app, ('/portal/content', ))       #'/portal/content2'))
-        get_transaction().commit()  # Get the mount points ready
+        transaction.commit()  # Get the mount points ready
 
 
     def _clear(self, call_close_hook = 0):
         Log(LOG_DEBUG, "beforeClose", self.app.objectIds())
-        get_transaction().abort()
-        get_transaction().commit()
+        transaction.abort()
+        transaction.commit()
         ArchetypesTestCase.ArcheSiteTestCase._clear(self, call_close_hook)
         try:            self.app.portal._delObject('content',)
         except:         LogException()
@@ -221,7 +222,7 @@ class MountFolderTests(ArchetypesTestCase.ArcheSiteTestCase):      #unittest.Tes
         self.assertEqual(app.mount1._p_changed, 1)
         self.assertEqual(app.mount2._p_changed, 1)
         self.assertEqual(app._p_changed, 1)
-##        get_transaction().commit()
+##        transaction.commit()
         self.assertEqual(app.mount1._p_changed, 0)
         self.assertEqual(app.mount2._p_changed, 0)
         self.assertEqual(app._p_changed, 0)
@@ -271,13 +272,13 @@ class MountFolderTests(ArchetypesTestCase.ArcheSiteTestCase):      #unittest.Tes
 ##        self.app.mount2 = Folder()
 ##        self.app.mount2.id = 'mount2'
 ##        self.assert_(getMountPoint(self.app.mount2) is None)
-##        get_transaction().commit()
+##        transaction.commit()
 ##        self.assert_(getMountPoint(self.app.mount2) is None)
         del self.app.portal.content
         self.app.portal.content = Folder()
         self.app.portal.content.id = 'content'
         self.assert_(getMountPoint(self.app.portal.content) is None)
-##        get_transaction().commit()
+##        transaction.commit()
         self.assert_(getMountPoint(self.app.portal.content) is None)
 
 #tests.append(MountFolderTests)
