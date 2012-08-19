@@ -56,7 +56,3 @@ def initialize(context):
         product_name=PROJECTNAME,
         icon='tool.gif'
         ).initialize(context)
-
-# Import monkey patches.
-import patches
-
