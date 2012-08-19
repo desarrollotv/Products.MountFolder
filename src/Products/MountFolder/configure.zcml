@@ -1,0 +1,26 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="Products.MountFolder">
+
+  <five:registerPackage package="." initialize=".initialize" />
+
+  <!-- Register the installation GenericSetup extension profile -->
+  <genericsetup:registerProfile
+      name="default"
+      title="Mount Folder"
+      directory="profiles/default"
+      description="AT-based Folder that can be used as the root container for a mounted database."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <class class=".MountFolder.MountFolder">
+    <require
+        permission="zope2.View"
+        interface=".interfaces.IMountFolder"
+        />
+  </class>
+
+</configure>

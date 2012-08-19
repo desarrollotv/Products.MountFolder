@@ -27,8 +27,11 @@ from ComputedAttribute import ComputedAttribute
 from Acquisition import aq_base
 from Acquisition import aq_inner
 from Acquisition import aq_parent
-from OFS.interfaces import IOrderedContainer
 from zExceptions import Unauthorized
+
+from zope.interface import implements
+
+from Products.Archetypes import atapi
 
 # CMF imports
 from Products.CMFCore.utils import _checkPermission
@@ -37,18 +40,27 @@ from Products.CMFCore import permissions
 from Products.CMFCore.utils import getToolByName
 
 # Archetypes imports
-from Products.Archetypes.interfaces.base import IBaseFolder
+
+from Products.Archetypes.BaseFolder import BaseFolderMixin
 from Products.Archetypes.OrderedBaseFolder import OrderedContainer
 
-from Products.Archetypes.atapi import BaseFolderMixin
-from Products.Archetypes.atapi import registerType
+from Products.CMFPlone.PloneFolder import ReplaceableWrapper
+from webdav.NullResource import NullResource
+
+from Products.ATContentTypes.content import schemata
 
 # Product imports
 from Products.MountFolder.config import PROJECTNAME
+from Products.MountFolder.interfaces import IMountFolder
 
-# Other imports as in ATContentTypes 0.2
-from Products.CMFPlone.PloneFolder import ReplaceableWrapper
-from webdav.NullResource import NullResource
+
+MountFolderSchema = BaseFolderMixin.schema.copy() + atapi.Schema(())
+
+# Set storage on fields copied from ATFolderSchema, making sure
+# they work well with the python bridge properties.
+
+#MountFolderSchema['title'].storage = atapi.AnnotationStorage()
+#MountFolderSchema['description'].storage = atapi.AnnotationStorage()
 
 
 class MountFolder(BaseFolderMixin, OrderedContainer):
@@ -58,11 +70,11 @@ class MountFolder(BaseFolderMixin, OrderedContainer):
 
     isReferenceable = None
 
-    implements = (IBaseFolder, IOrderedContainer)
+    implements(IMountFolder)
 
-    schema = BaseFolderMixin.schema
-    
-    global_allow = 0
+    meta_type = "MountFolder"
+    schema = MountFolderSchema
+
     use_folder_tabs = 1
 
     actions = ({
@@ -73,6 +85,9 @@ class MountFolder(BaseFolderMixin, OrderedContainer):
                },)
 
     security = ClassSecurityInfo()
+
+    #title = atapi.ATFieldProperty('title')
+    #description = atapi.ATFieldProperty('description')
 
     # reference register / unregister methods
     def _register(self, *args, **kwargs): pass
@@ -180,4 +195,4 @@ class MountFolder(BaseFolderMixin, OrderedContainer):
         object.manage_undo_transactions(transaction_info)
 
 
-registerType(MountFolder, PROJECTNAME)
+atapi.registerType(MountFolder, PROJECTNAME)
